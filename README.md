@@ -82,6 +82,7 @@ Authentication: This version does not require authentication or API keys.
 
 There are four types of errors the API will return`;
 - 400 - bad request
+- 403 - no Question found
 - 404 - resource not found
 - 422 - unprocessable
 
@@ -89,209 +90,227 @@ There are four types of errors the API will return`;
 
 #### GET '/categories'
 - Fetches a dictionary of all available categories.
-- Returns an object with a single key, categories, that contains a object of id: category_string key:value pairs. 
+- return list of all categories. 
 - Sample: `curl http://127.0.0.1:5000/categories`
 ```
-{
-  "categories: {
-    '1' : "Science",
-    '2' : "Art",
-    '3' : "Geography",
-    '4' : "History",
-    '5' : "Entertainment",
-    '6' : "Sports"
-    },
+"categories": {
+    "1": "Science",
+    "2": "Art",
+    "3": "Geography",
+    "4": "History",
+    "5": "Entertainment",
+    "6": "Sports"
+  },
   "success": true
 }
+
 ```
 
 #### GET '/categories/<int:id>/questions'
-- Gets all questions in a specified category by id using url parameters
-- Returns a JSON object with paginated questions from a specified category
+- Get list of all question based on category selected
+- Returns a JSON object with paginated questions of a selected category
 - Sample: `curl http://127.0.0.1:5000/categories/3/questions`
 ```
-{
-  "current_category": "Geography", 
+  "currentCategory": "Geography",
   "questions": [
     {
-      "answer": "Lake Victoria", 
-      "category": 3, 
-      "difficulty": 2, 
-      "id": 13, 
+      "answer": "Lake Victoria",
+      "category": 3,
+      "difficulty": 2,
+      "id": 13,
       "question": "What is the largest lake in Africa?"
-    }, 
+    },
     {
-      "answer": "The Palace of Versailles", 
-      "category": 3, 
-      "difficulty": 3, 
-      "id": 14, 
+      "answer": "The Palace of Versailles",
+      "category": 3,
+      "difficulty": 3,
+      "id": 14,
       "question": "In which royal palace would you find the Hall of Mirrors?"
-    }, 
+    },
     {
-      "answer": "Agra", 
-      "category": 3, 
-      "difficulty": 2, 
-      "id": 15, 
+      "answer": "Agra",
+      "category": 3,
+      "difficulty": 2,
+      "id": 15,
       "question": "The Taj Mahal is located in which Indian city?"
+    },
+    {
+      "answer": "New Delhi",
+      "category": 3,
+      "difficulty": 1,
+      "id": 25,
+      "question": "Which is the capital of India?"
+    },
+    {
+      "answer": "New Delhi",
+      "category": 3,
+      "difficulty": 1,
+      "id": 26,
+      "question": "Which is the capital of India?"
     }
-  ], 
-  "success": true, 
-  "total_questions": 3
+  ],
+  "success": true,
+  "totalQuestions": 5
 }
+
 ```
 
 #### GET '/questions'
-- Returns a list of questions
-  - Includes a list of categories
+  - Returns a list of all questions
+  - Includes a list of all categories
   - Paginated in groups of 10
-  - Includes details of question such as category, difficulty, answer and id
+  - returns total_questions and success as True
 - Sample: `curl http://127.0.0.1:5000/questions`
 ```
-{
   "categories": {
-    "1": "Science", 
-    "2": "Art", 
-    "3": "Geography", 
-    "4": "History", 
-    "5": "Entertainment", 
+    "1": "Science",
+    "2": "Art",
+    "3": "Geography",
+    "4": "History",
+    "5": "Entertainment",
     "6": "Sports"
-  }, 
+  },
+  "current_category": "why this is required",
   "questions": [
     {
-      "answer": "Maya Angelou", 
-      "category": 4, 
-      "difficulty": 2, 
-      "id": 5, 
-      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
-    }, 
-    {
-      "answer": "Muhammad Ali", 
-      "category": 4, 
-      "difficulty": 1, 
-      "id": 9, 
-      "question": "What boxer's original name is Cassius Clay?"
-    }, 
-    {
-      "answer": "Apollo 13", 
-      "category": 5, 
-      "difficulty": 4, 
-      "id": 2, 
+      "answer": "Apollo 13",
+      "category": 5,
+      "difficulty": 4,
+      "id": 2,
       "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
-    }, 
+    },
     {
-      "answer": "Tom Cruise", 
-      "category": 5, 
-      "difficulty": 4, 
-      "id": 4, 
+      "answer": "Tom Cruise",
+      "category": 5,
+      "difficulty": 4,
+      "id": 4,
       "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
-    }, 
+    },
     {
-      "answer": "Edward Scissorhands", 
-      "category": 5, 
-      "difficulty": 3, 
-      "id": 6, 
+      "answer": "Maya Angelou",
+      "category": 4,
+      "difficulty": 2,
+      "id": 5,
+      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+    },
+    {
+      "answer": "Edward Scissorhands",
+      "category": 5,
+      "difficulty": 3,
+      "id": 6,
       "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
-    }, 
+    },
     {
-      "answer": "Brazil", 
-      "category": 6, 
-      "difficulty": 3, 
-      "id": 10, 
+      "answer": "Muhammad Ali",
+      "category": 4,
+      "difficulty": 1,
+      "id": 9,
+      "question": "What boxer's original name is Cassius Clay?"
+    },
+    {
+      "answer": "Brazil",
+      "category": 6,
+      "difficulty": 3,
+      "id": 10,
       "question": "Which is the only team to play in every soccer World Cup tournament?"
-    }, 
+    },
     {
-      "answer": "Uruguay", 
-      "category": 6, 
-      "difficulty": 4, 
-      "id": 11, 
+      "answer": "Uruguay",
+      "category": 6,
+      "difficulty": 4,
+      "id": 11,
       "question": "Which country won the first ever soccer World Cup in 1930?"
-    }, 
+    },
     {
-      "answer": "George Washington Carver", 
-      "category": 4, 
-      "difficulty": 2, 
-      "id": 12, 
+      "answer": "George Washington Carver",
+      "category": 4,
+      "difficulty": 2,
+      "id": 12,
       "question": "Who invented Peanut Butter?"
-    }, 
+    },
     {
-      "answer": "Lake Victoria", 
-      "category": 3, 
-      "difficulty": 2, 
-      "id": 13, 
+      "answer": "Lake Victoria",
+      "category": 3,
+      "difficulty": 2,
+      "id": 13,
       "question": "What is the largest lake in Africa?"
-    }, 
+    },
     {
-      "answer": "The Palace of Versailles", 
-      "category": 3, 
-      "difficulty": 3, 
-      "id": 14, 
+      "answer": "The Palace of Versailles",
+      "category": 3,
+      "difficulty": 3,
+      "id": 14,
       "question": "In which royal palace would you find the Hall of Mirrors?"
     }
-  ], 
-  "success": true, 
-  "total_questions": 19
+  ],
+  "success": true,
+  "total_questions": 21
 }
+
 ```
 
 #### POST '/questions'
 - Creates a new question using JSON request parameters in the database
-- Sample: `curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d '{"question": "How tall is Table Mountain?", "answer": "1085m", "difficulty": 3, "category": "3" }'`
+- Sample: `curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d '{"question": "Which is the capital of India?", "answer": "New Delhi", "difficulty": 3, "category": "3" }'`
 - Created question:
 
 
 #### POST '/search_question'
-- Searches for questions using a search term, 
+- Serach questions questions using a searchTerm, 
 - Returns a JSON object with paginated questions matching the search term
-- Sample: `curl http://127.0.0.1:5000/search_question -X POST -H "Content-Type: application/json" -d '{"searchTerm": "artist"}'`
+- Sample: `curl http://127.0.0.1:5000/search_question -X POST -H "Content-Type: application/json" -d '{"searchTerm": "capital"}'`
 ```
-{
-  "current_category": null, 
+  "currentCategory": "none",
   "questions": [
     {
-      "answer": "Escher", 
-      "category": 2, 
-      "difficulty": 1, 
-      "id": 16, 
-      "question": "Which Dutch graphic artist\u2013initials M C was a creator of optical illusions?"
-    }, 
+      "answer": "New Delhi",
+      "category": 3,
+      "difficulty": 1,
+      "id": 25,
+      "question": "Which is the capital of India?"
+    },
     {
-      "answer": "Jackson Pollock", 
-      "category": 2, 
-      "difficulty": 2, 
-      "id": 19, 
-      "question": "Which American artist was a pioneer of Abstract Expressionism, and a leading exponent of action painting?"
+      "answer": "New Delhi",
+      "category": 3,
+      "difficulty": 1,
+      "id": 26,
+      "question": "Which is the capital of India?"
     }
-  ], 
-  "success": true, 
-  "total_questions": 2
+  ],
+  "success": true,
+  "totalQuestions": 2
 }
+
 ```
 
 #### POST '/quizzes'
-- Allows user to play the trivia game
-- Uses JSON request parameters of a chosen category and previous questions
+- play the trivia game
+- Send category and previouls question as JSON object with request
 - Returns JSON object with random available questions which are not among previous used questions
-- Sample: `curl http://127.0.0.1:5000/quizzes -X POST -H "Content-Type: application/json" -d '{"previous_questions": [7, 8], "quiz_category": {"type": "Geography", "id": "3"}}'`
+- Sample: `curl http://127.0.0.1:5000/quizzes -X POST -H "Content-Type: application/json" -d '{"previous_questions": [1, 2], "quiz_category": {"type": "Geography", "id": "3"}}'`
 ```
-{
+ "previousQuestion": [
+    1,
+    2
+  ],
   "question": {
-    "answer": "Agra", 
-    "category": 3, 
-    "difficulty": 2, 
-    "id": 15, 
-    "question": "The Taj Mahal is located in which Indian city?"
-  }, 
+    "answer": "New Delhi",
+    "category": 3,
+    "difficulty": 1,
+    "id": 25,
+    "question": "Which is the capital of India?"
+  },
   "success": true
 }
+
+
 ```
 
 #### DELETE '/questions/<int:id>'
 - Deletes a question by id using url parameters
-- Returns id of deleted questions if successful
 - Sample: `curl http://127.0.0.1:5000/questions/4 -X DELETE`
 ```
   {
-    "deleted": 4, 
     "success": true
   }
 ```
